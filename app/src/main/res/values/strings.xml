@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Labo2Films</string>
+    <string name="lister">Lister</string>
+    <string name="ajouter">Ajouter</string>
+    <string name="lister_selon_categorie">Lister selon categorie</string>
+    <string name="supprimer">Supprimer</string>
+    <string name="quitter">Quitter</string>
+    <string name="img_film">FILMS</string>
+    <string name="categorie">Categorie</string>
+    <string name="numero">Numero</string>
+    <string name="entrez_le_numero">Entrez le numero</string>
+    <string name="titre">Titre</string>
+    <string name="code_de_la_categorie">Code de la categorie</string>
+    <string name="fr">FR</string>
+    <string name="an">AN</string>
+    <string name="langue">Langue</string>
+    <string name="cote">Cote</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="supprimer_film">Supprimer un film</string>
+    <string name="lister_par_categorie">Lister Par Categorie</string>
+    <string name="selectionner_le_code_de_la_categorie">Selectionner le code de la categorie</string>
+</resources>

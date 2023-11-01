@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_list"
+        android:icon="@drawable/ic_menu_list"
+        android:title="@string/lister"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_menu_add"
+        android:title="@string/ajouter"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_list_categ"
+        android:icon="@drawable/ic_menu_categ"
+        android:title="@string/lister_selon_categorie"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_menu_delete"
+        android:title="@string/supprimer"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/baseline_more_vert_24"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_quit"
+                android:icon="@drawable/ic_menu_close"
+                android:title="@string/quitter"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+
+</menu>
