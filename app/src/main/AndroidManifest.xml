@@ -15,6 +15,14 @@
         android:theme="@style/Theme"
         tools:targetApi="31">
         <activity
+            android:name=".AjouterCategorieActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NoActionBar" />
+        <activity
+            android:name=".CategoriesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NoActionBar" />
+        <activity
             android:name=".ListerParCategorieActivity"
             android:exported="false"
             android:theme="@style/Theme.NoActionBar" />

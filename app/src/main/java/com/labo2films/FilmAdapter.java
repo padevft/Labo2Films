@@ -1,5 +1,6 @@
 package com.labo2films;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 
 public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder> {
     private final ArrayList<Film> films;
+    FilmDbHelper db;
 
-    public FilmAdapter(ArrayList<Film> films) {
+    public FilmAdapter(Context context, ArrayList<Film> films) {
         this.films = films;
+        db = new FilmDbHelper(context);
     }
 
     @NonNull
@@ -27,9 +30,10 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder
     @Override
     public void onBindViewHolder(@NonNull FilmViewHolder holder, int position) {
         Film film = films.get(position);
+        Category category = db.getCategory(film.getCodeCateg());
         holder.textTitle.setText(film.getTitre());
         holder.num.setText(String.valueOf(film.getNum()));
-        holder.code.setText(String.valueOf(film.getCodeCateg()));
+        holder.code.setText(category.getName());
         holder.lang.setText(String.valueOf(film.getLangue()));
         holder.cote.setText(String.valueOf(film.getCote()));
     }

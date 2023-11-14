@@ -96,16 +96,22 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/editTextCateg"
+                <!--                <EditText-->
+                <!--                    android:id="@+id/editTextCateg"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:autofillHints=""-->
+                <!--                    android:background="@drawable/drawable_editext"-->
+                <!--                    android:hint="@string/code_de_la_categorie"-->
+                <!--                    android:inputType="number"-->
+                <!--                    android:padding="15dp" />-->
+                <Spinner
+                    android:id="@+id/spinnerCateg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:autofillHints=""
-                    android:background="@drawable/drawable_editext"
-                    android:hint="@string/code_de_la_categorie"
-                    android:inputType="number"
-                    android:padding="15dp" />
+                    android:layout_marginTop="30dp"
+                    android:spinnerMode="dialog" />
             </LinearLayout>
 
             <LinearLayout
@@ -178,13 +184,12 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/primary"
-                android:text="@string/enregistrer"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textAllCaps="false"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="12dp"
-                />
+                android:text="@string/enregistrer"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

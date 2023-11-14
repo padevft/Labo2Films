@@ -20,6 +20,8 @@ public class SupprimerActivity extends AppCompatActivity {
     EditText numEdiText;
     Button delete;
 
+    FilmDbHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,8 @@ public class SupprimerActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        db = new FilmDbHelper(this);
 
         Intent intent = getIntent();
         listeFilms = intent.getParcelableArrayListExtra("listeFilms");
@@ -59,6 +63,7 @@ public class SupprimerActivity extends AppCompatActivity {
             if (FilmUti.numeroExisteDansListe(num, listeFilms)) {
                 for (Film film : listeFilms) {
                     if (film.getNum() == num) {
+                        db.deleteFilm(num);
                         listeFilms.remove(film);
                         break;
                     }

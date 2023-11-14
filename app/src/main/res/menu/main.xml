@@ -28,6 +28,17 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/action_categs"
+                android:icon="@drawable/ic_menu_list_2"
+                android:title="@string/categories"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/action_add_categ"
+                android:icon="@drawable/ic_menu_add_2"
+                android:title="@string/ajouter_categorie"
+                app:showAsAction="ifRoom" />
+            <item
                 android:id="@+id/action_quit"
                 android:icon="@drawable/ic_menu_close"
                 android:title="@string/quitter"

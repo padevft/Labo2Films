@@ -19,4 +19,9 @@
     <string name="supprimer_film">Supprimer un film</string>
     <string name="lister_par_categorie">Lister Par Categorie</string>
     <string name="selectionner_le_code_de_la_categorie">Selectionner le code de la categorie</string>
+    <string name="add_category">Ajouter une catgeorie</string>
+    <string name="nom_category">Nom</string>
+    <string name="entrer_le_nom">Entrer le nom</string>
+    <string name="categories">Categories</string>
+    <string name="ajouter_categorie">Ajouter categorie</string>
 </resources>

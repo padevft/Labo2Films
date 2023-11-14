@@ -1,14 +1,12 @@
 package com.labo2films;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -36,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FilmAdapter adapter;
     Spinner categorySpinner;
+
+    FilmDbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycleView);
         categorySpinner = findViewById(R.id.spinnerCateg);
 
-
-        listeFilms = loadFilmsFromFile();
+        db = new FilmDbHelper(this);
+        listeFilms = db.getAllFilms();
 
     }
 
@@ -78,43 +72,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_delete:
                 launchDeleteFilm();
                 return true;
+            case R.id.action_categs:
+                launchCategories();
+                return true;
+            case R.id.action_add_categ:
+                launchAddCategory();
+                return true;
             case R.id.action_quit:
-                saveFilmsToFile(listeFilms);
+                saveFilmsToBD(listeFilms);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private ArrayList<Film> loadFilmsFromFile() {
-        ArrayList<Film> films = new ArrayList<>();
-        //InputStream inputStream = getApplicationContext().getResources().openRawResource(R.raw.films);
-        try {
-            FileInputStream fis = openFileInput("films.txt");
-            if (fis != null) {
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader br = new BufferedReader(isr);
-
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] parts = line.split(";");
-                    if (parts.length == 5) {
-                        int num = Integer.parseInt(parts[0]);
-                        String title = parts[1];
-                        int category = Integer.parseInt(parts[2]);
-                        String language = parts[3];
-                        int rating = Integer.parseInt(parts[4]);
-
-                        Film film = new Film(num, title, category, language, rating);
-                        films.add(film);
-                    }
-                }
-                fis.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void notifyAdapter() {
+        if (adapter == null) {
+            listFilms();
+        } else {
+            adapter.notifyDataSetChanged();
         }
-        return films;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -122,13 +99,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.logo).setVisibility(View.GONE);
         findViewById(R.id.linearSpinner).setVisibility(View.GONE);
         findViewById(R.id.recycleView).setVisibility(View.VISIBLE);
-        if (adapter == null) {
-            adapter = new FilmAdapter(listeFilms);
-            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
+        adapter = new FilmAdapter(MainActivity.this, listeFilms);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -150,7 +123,17 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.linearSpinner).setVisibility(View.VISIBLE);
         findViewById(R.id.recycleView).setVisibility(View.GONE);
         setCategorySpinner();
+    }
 
+
+    private void launchCategories() {
+        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchAddCategory() {
+        Intent intent = new Intent(getApplicationContext(), AjouterCategorieActivity.class);
+        startActivity(intent);
     }
 
 
@@ -163,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Film> listeFilmsAjoute = Objects.requireNonNull(data).getParcelableArrayListExtra("listeFilms");
                 listeFilms.clear();
                 listeFilms.addAll(listeFilmsAjoute);
-                adapter.notifyDataSetChanged();
+                notifyAdapter();
             }
             if (result.getResultCode() == 2) {
                 int countFrenchFilms = data.getIntExtra("countFrenchFilms", 0);
@@ -178,50 +161,29 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    private void saveFilmsToFile(ArrayList<Film> films) {
-        try {
-            FileOutputStream fos = openFileOutput("films.txt", Context.MODE_PRIVATE);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            for (Film film : films) {
-                String filmData = film.getNum() + ";" + film.getTitre() + ";" + film.getCodeCateg() + ";" + film.getLangue() + ";" + film.getCote();
-                osw.write(filmData + "\n");
-            }
-            osw.close();
-            fos.close();
-            Toast.makeText(this, "Les films ont été enregistrés avec succès.", Toast.LENGTH_SHORT).show();
-            finish();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private ArrayList<String> getUniqueCategories(ArrayList<Film> films) {
-        ArrayList<String> categories = new ArrayList<>();
+    private void saveFilmsToBD(ArrayList<Film> films) {
+        db.addFilmList(films);
+        Toast.makeText(this, "Les films ont été enregistrés avec succès.", Toast.LENGTH_SHORT).show();
+        finish();
 
-        for (Film film : films) {
-            if (!categories.contains(String.valueOf(film.getCodeCateg()))) {
-                categories.add(String.valueOf(film.getCodeCateg()));
-            }
-        }
-        return categories;
     }
 
     public void setCategorySpinner() {
-        ArrayList<String> categories = new ArrayList<>();
-        categories.add("Selectionner le code de la categorie");
-        categories.addAll(getUniqueCategories(listeFilms));
         categorySpinner = findViewById(R.id.spinnerCateg);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(new Category(0,"Selectionnez une categorie"));
+        categories.addAll(db.getAllCategories());
+        CategoryAdapterSpinner adapter = new CategoryAdapterSpinner(this, R.layout.simple_spinner_white, categories);
         categorySpinner.setAdapter(adapter);
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (position != 0) {
-                    String selectedCategory = categories.get(position);
+                    Category selectedCategory = (Category) parentView.getItemAtPosition(position);
                     Intent intent = new Intent(MainActivity.this, ListerParCategorieActivity.class);
-                    intent.putExtra("selectedCategory", selectedCategory);
+                    intent.putExtra("selectedCategory", String.valueOf(selectedCategory.getCode()));
                     intent.putParcelableArrayListExtra("listeFilms", listeFilms);
                     getResult.launch(intent);
                 }

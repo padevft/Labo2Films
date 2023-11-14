@@ -34,7 +34,6 @@ public class ListerParCategorieActivity extends AppCompatActivity {
         selectedCategory = getIntent().getStringExtra("selectedCategory");
         listeFilms = getIntent().getParcelableArrayListExtra("listeFilms");
         filmsFiltres = getListeFilms();
-
         setTitle("Films De Categorie " + selectedCategory);
 
         recyclerView = findViewById(R.id.recycleView);
@@ -64,7 +63,7 @@ public class ListerParCategorieActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void listViewFilms() {
         if (adapter == null) {
-            adapter = new FilmAdapter(filmsFiltres);
+            adapter = new FilmAdapter(ListerParCategorieActivity.this,filmsFiltres);
             recyclerView.setLayoutManager(new LinearLayoutManager(ListerParCategorieActivity.this));
             recyclerView.setAdapter(adapter);
         } else {
