@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:background="@color/primary"
+
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dialog"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:titleTextColor="@color/white" />

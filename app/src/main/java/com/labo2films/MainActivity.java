@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void notifyAdapter() {
         if (adapter == null) {
             listFilms();

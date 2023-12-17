@@ -31,6 +31,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder
     public void onBindViewHolder(@NonNull FilmViewHolder holder, int position) {
         Film film = films.get(position);
         Category category = db.getCategory(film.getCodeCateg());
+        holder.letter.setText(String.valueOf(film.getTitre().charAt(0)));
         holder.textTitle.setText(film.getTitre());
         holder.num.setText(String.valueOf(film.getNum()));
         holder.code.setText(category.getName());
@@ -44,10 +45,11 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.FilmViewHolder
     }
 
     public static class FilmViewHolder extends RecyclerView.ViewHolder {
-        TextView textTitle, num, code, lang, cote;
+        TextView letter, textTitle, num, code, lang, cote;
 
         public FilmViewHolder(View itemView) {
             super(itemView);
+            letter = itemView.findViewById(R.id.letter);
             textTitle = itemView.findViewById(R.id.title);
             num = itemView.findViewById(R.id.num);
             code = itemView.findViewById(R.id.categ);
